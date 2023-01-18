@@ -1,0 +1,17 @@
+
+.sign-up-page-container {
+    display: flex;
+    width: 900px;
+    justify-content: center;
+    margin: 30px auto;
+
+.sign-up-container {
+    display: flex;
+    flex-direction: column;
+    width: 380px;
+  
+    h2 {
+      margin: 10px 0;
+    }
+  }
+}
