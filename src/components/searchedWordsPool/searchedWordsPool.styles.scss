@@ -1,19 +1,23 @@
 .searched-words-pool-container {
-    
+    background-color: blanchedalmond;
     width: 100%;
+    
     height: auto;
     padding-left: 20px;
     padding-top: 20px;
+    padding-right: 20px;
 
     .searched-words-pool-title {
+        width: 100%;
         font-style: normal;
         font-weight: 400;
         font-size: 25px;
         line-height: 24px; 
     }
     .searched-words-container {
+        width: 100%;
         display: flex;
-        overflow-wrap: normal;
+        flex-wrap: wrap;
         padding: 30px;
     }
 

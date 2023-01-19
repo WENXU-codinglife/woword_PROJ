@@ -1,11 +1,15 @@
 import { useContext, useState } from "react";
 import { WordContext } from "../../contexts/word/word.context";
+import { UserContext } from "../../contexts/user/user.context";
 import { dictionaryAPIUrlGen } from '../../utils/api/api.utils'
+import { createOrUpdateWordDocument } from "../../utils/firebase/firebase.utils";
 import { wordResponseValidation } from "../../utils/dataManipulation/stringManipulation";
 import { dictionaryApiReponseParser } from "../../utils/dataManipulation/stringManipulation";
+
 import './searchBar.styles.scss';
 
 const SearchBar = () => {
+    const { currentUser } = useContext(UserContext);
     const { todaySearchedWords, 
         addSearchedWord, 
         searchedWord, 
@@ -19,12 +23,14 @@ const SearchBar = () => {
     const searchHandler = () => {
         fetch(dictionaryAPIUrlGen(searchedWord))
         .then(response => response.json().then(data => {
+            console.log(data);
             if(!wordResponseValidation(data)){
-                console.log('wrong word!');
+                alert('Oop! Please double check the word you typed!');
                 return;
             }
             setSearchedWordDefinition(dictionaryApiReponseParser(data));
             addSearchedWord(searchedWord);
+            createOrUpdateWordDocument(searchedWord, currentUser.uid);
         }))
         .catch(error => console.log(error))
     }

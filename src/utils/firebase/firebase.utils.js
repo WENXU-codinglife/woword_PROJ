@@ -14,7 +14,19 @@ import {
     onAuthStateChanged,
 } from 'firebase/auth';
 
-import {getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+    getFirestore, 
+    doc, 
+    getDoc, 
+    getDocs,
+    setDoc, 
+    addDoc, 
+    updateDoc,
+    collection,
+    query,
+    where,
+    FieldValue,
+} from 'firebase/firestore';
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAzE5uO19xiTSp_Jb4gH5kIFZGT3L3YD1c",
@@ -79,3 +91,47 @@ export const signOutUser = () => signOut(auth);
 export const onAuthStateChangedLister = (callback) => {
     onAuthStateChanged(auth, callback);
 }
+
+/*
+word doc
+{
+    text: 
+    firstTimestamp:
+    latestTimestamp:
+    count:
+    user: 
+}
+*/
+export const createOrUpdateWordDocument = async (word, userId) => {
+    const timestamp = new Date();
+    const wordsRef = collection(db, 'words');
+    const q = query(wordsRef, where('text', '==', word), where('user', '==', userId));
+    const querySnapshot = await getDocs(q);//.where('text', '==', word).where('user', '==', userId).get();
+    if(querySnapshot.size === 1){
+        querySnapshot.forEach( async (wordDoc) => { 
+            const docRef = doc(db, 'words', wordDoc.id);
+            await updateDoc(docRef, {
+                latestTimestamp: timestamp,
+                count: wordDoc.data().count + 1
+            }) ;
+        })
+    }else if(querySnapshot.size === 0){
+        const wordDocRef = await addDoc(
+            wordsRef,
+            {
+                text: word,
+                firstTimestamp: timestamp,
+                latestTimestamp: timestamp,
+                count: 1,
+                user: userId,        
+            }
+        );
+    }else{
+        console.log('Multiple word records error!', querySnapshot.length);
+    }
+}
+
+// Still have the problems of xxx is not a function, e.g. update() is not a function,
+// or FieldValue.increment() is not a function. Also found that it can't import 'update' 
+// from 'firebase/firestore'. 
+// NEED TO BE RESOLVED LATE!

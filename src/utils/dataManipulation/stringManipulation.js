@@ -26,8 +26,6 @@ export const dictionaryApiReponseParser = (data) => {
     console.log(data);
     const parsedData = [];
     data.forEach((fl) => {
-        console.log(parsedData);
-        if(!fl.hom)return;
         const obj = {
             part: fl.fl,
             dts: []
@@ -38,14 +36,31 @@ export const dictionaryApiReponseParser = (data) => {
                 console.log('dd');
                 dd.forEach((ddd) => {
                     console.log('ddd',ddd);
-                    ddd[1].dt.forEach(dddd=>{
-                        console.log('dddd');
-                        if(dddd[0] === 'text'){
-                            obj.dts.push({text: definitionTextCleaner(dddd[1])});
-                        }else if(dddd[0] === 'vis'){
-                            obj.dts[obj.dts.length-1] = {...obj.dts[obj.dts.length-1], vis:definitionTextCleaner(dddd[1][0].t)};
-                        }
-                    })
+                    try {
+                        ddd[1].forEach(dddd=>{
+                            dddd[1].dt.forEach(ddddd=>{
+                                if(ddddd[0] === 'text'){
+                                    obj.dts.push({text: definitionTextCleaner(ddddd[1])});
+                                }else if(ddddd[0] === 'vis'){
+                                    obj.dts[obj.dts.length-1] = {...obj.dts[obj.dts.length-1], vis:definitionTextCleaner(ddddd[1][0].t)};
+                                }                            
+                            })
+                        })
+                    } catch (error){
+                        console.log(error);
+                    }
+                    try {
+                        ddd[1].dt.forEach(dddd=>{
+                            console.log('dddd');
+                            if(dddd[0] === 'text'){
+                                obj.dts.push({text: definitionTextCleaner(dddd[1])});
+                            }else if(dddd[0] === 'vis'){
+                                obj.dts[obj.dts.length-1] = {...obj.dts[obj.dts.length-1], vis:definitionTextCleaner(dddd[1][0].t)};
+                            }
+                        })
+                    } catch (error) {
+                        console.log(error);
+                    };
                 });
             })
         })
