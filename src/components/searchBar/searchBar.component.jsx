@@ -10,7 +10,7 @@ import './searchBar.styles.scss';
 
 const SearchBar = () => {
     const { currentUser } = useContext(UserContext);
-    const { todaySearchedWords, 
+    const {
         addSearchedWord, 
         searchedWord, 
         setSearchedWord,

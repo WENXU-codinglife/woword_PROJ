@@ -11,7 +11,7 @@ const SearchedWordsPool = () =>{
             <span className='searched-words-pool-title'>You searched these words today:</span>
             <div className='searched-words-container'>
                 {todaySearchedWords.map((word) => (
-                    <WordButton id={word} word={word} />
+                    <WordButton key={word.text} word={word} />
                 ))}
             </div>
         </div>
