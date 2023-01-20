@@ -29,7 +29,6 @@ const InteractionWindow = () => {
                         key={`${tab}`}
                         className='tab-container'
                         onClick={() => {
-                            console.log(tab, ' is clicked');
                             tabClickHandler(tab);
                         }}
                     >
