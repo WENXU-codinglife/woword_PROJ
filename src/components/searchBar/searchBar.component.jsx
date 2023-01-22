@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { WordContext } from "../../contexts/word/word.context";
 import { UserContext } from "../../contexts/user/user.context";
-import { dictionaryAPIUrlGen } from '../../utils/api/api.utils'
+import { dictionaryAPIUrlGen } from '../../utils/api/dictionaryAPI.utils'
 import { createOrUpdateWordDocument } from "../../utils/firebase/firebase.utils";
 import { wordResponseValidation } from "../../utils/dataManipulation/stringManipulation";
 import { dictionaryApiReponseParser } from "../../utils/dataManipulation/stringManipulation";
