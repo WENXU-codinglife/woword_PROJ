@@ -3,6 +3,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../assets/logo/crown.svg';
 import { UserContext } from "../../contexts/user/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
+import ProfileIcon from "../../components/profileIcon/profileIcon.component";
 import './navigation.styles.scss';
 
 const Navigation = () => {
@@ -25,7 +26,7 @@ const Navigation = () => {
                     <span className='nav-link' onClick={signOutHandler}>SIGN OUT</span>
                 }
                 {currentUser? (
-                    <div>UserProfileImg</div>
+                    <ProfileIcon />
                 ) : (
                     <Link className='nav-link' to='/sign-in'>
                     SIGN IN

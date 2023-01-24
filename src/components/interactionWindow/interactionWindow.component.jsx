@@ -1,13 +1,14 @@
 import { useContext } from 'react';
 
 import { UserContext } from '../../contexts/user/user.context';
-import { InteractionModeContext } from '../../contexts/interactionMode/interactionMode.context';
+import { InteractionModeAndDataContext } from '../../contexts/interactionModeAndData/interactionModeAndData.context';
 import { INTERACTIONMODE } from '../../utils/titles/titles.utils';
 import { INTERACTOINWINDOWTABS } from '../../utils/titles/titles.utils';
+import { openaiReply } from '../../utils/api/openaiAPI.utils';
 import './interactionWindow.styles.scss';
-
+import InteractionDisplayBox from '../interactionDisplayBox/interactionDisplayBox.compomnent';
 const InteractionWindow = () => {
-    const { currentMode, setCurrentMode } = useContext(InteractionModeContext);
+    const { currentMode, setCurrentMode } = useContext(InteractionModeAndDataContext);
     
     const tabClickHandler = (mode) => {
         if (mode === INTERACTOINWINDOWTABS.AICONVERSATION)
@@ -20,14 +21,23 @@ const InteractionWindow = () => {
             console.error('Interaction Mode Selection Error');
     }
 
+    const isSelectedTab = (tab) => {
+        if (
+            (tab === INTERACTOINWINDOWTABS.AICONVERSATION && currentMode === INTERACTIONMODE.CONVERSATIONMODE)
+            || (tab === INTERACTOINWINDOWTABS.AICOMPOSER && currentMode === INTERACTIONMODE.COMPOSERMODE)
+            || (tab === INTERACTOINWINDOWTABS.AIOPTIMIZER && currentMode === INTERACTIONMODE.OPTIMIZERMODE)
+        ) return 'selected';
+        return 'unselected';
+    }
 
     return (
         <div className='interaction-window-container'>
+            <div className='interaction-window-tabs-container'>
             {Object.values(INTERACTOINWINDOWTABS).map((tab) => {
                 return (
                     <div 
                         key={`${tab}`}
-                        className='tab-container'
+                        className={`tab-container ${isSelectedTab(tab)} `}
                         onClick={() => {
                             tabClickHandler(tab);
                         }}
@@ -35,8 +45,12 @@ const InteractionWindow = () => {
                         {tab}
                     </div>
                 );
-            })
-            }
+            })}
+            </div>
+            <div className='interaction-display-input-wrapper'>
+                <InteractionDisplayBox />
+            </div>
+            
         </div>
     )
 }

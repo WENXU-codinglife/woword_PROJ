@@ -1,0 +1,32 @@
+.interaction-display-container {
+    overflow:scroll;
+    .conversation-message-wrapper {
+        display: flex;
+        &.AI {
+            justify-content: flex-start;
+        }
+        &.USER {
+            justify-content: flex-end;
+        }
+
+        .conversation-message-container {
+            font-size:large;
+            width:fit-content;
+            max-width: 60%;
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: 10px;
+            margin: 10px;
+            &.AI {
+                background-color: white;
+                
+            }
+    
+            &.USER {
+                
+                background-color: #00ff19;
+            }
+        }
+
+    }
+}

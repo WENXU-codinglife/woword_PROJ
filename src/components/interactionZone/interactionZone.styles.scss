@@ -1,6 +1,8 @@
 .interaction-zone-container {
+    display: flex;
+    flex-direction: column;
     background-color: #d9d9d920;
-    border-radius: 10px;
     width: 45%;
-    height: 85%;
+    margin-bottom: 20px;
+    border-radius: 10px;
 }

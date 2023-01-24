@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { WordContext } from '../../contexts/word/word.context';
-import { InteractionModeContext } from '../../contexts/interactionMode/interactionMode.context';
+import { InteractionModeAndDataContext } from '../../contexts/interactionModeAndData/interactionModeAndData.context';
 import { INTERACTIONMODE } from '../../utils/titles/titles.utils';
 import iconThumbsUp from '../../assets/icon/like.png';
 import iconCheckMark from '../../assets/icon/check.png';
@@ -9,7 +9,7 @@ import './wordButton.styles.scss';
 const WordButton = ( {word} ) => {
     const { text, searchedWordsPoolSelected, searchedWordsPoolMatched } = word;
     const { todaySearchedWords, setTodaySearchedWords } = useContext(WordContext);
-    const { currentMode } = useContext(InteractionModeContext);
+    const { currentMode } = useContext(InteractionModeAndDataContext);
 
     const onClickHandler = () => {
         console.log('button onClickHandler');
@@ -24,6 +24,7 @@ const WordButton = ( {word} ) => {
             setTodaySearchedWords(newArr);
         }
     }
+
     return (
         <div className='word-button-container' onClick={onClickHandler}>
             <div className='word-button-text'>{text}</div>

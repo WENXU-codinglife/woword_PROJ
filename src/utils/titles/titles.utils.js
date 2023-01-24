@@ -11,3 +11,8 @@ export const INTERACTOINWINDOWTABS = {
     AICOMPOSER: 'AI Composer',
     AIOPTIMIZER: 'AI Optimizer',
 }
+
+export const INTERACTIONSPEAKER= {
+    AI: 'AI',
+    USER: 'USER',
+}

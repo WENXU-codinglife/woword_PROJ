@@ -69,3 +69,11 @@ export const dictionaryApiReponseParser = (data) => {
     console.log(parsedData);
     return parsedData;
 }
+
+export const aiResponseCleaner = (msg) => {
+    return msg.replaceAll('\n', '');
+}
+
+export const stringComparison = (msg1, msg2) => {
+    return msg1 === msg2;
+}
