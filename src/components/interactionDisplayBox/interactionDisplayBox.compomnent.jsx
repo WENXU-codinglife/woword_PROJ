@@ -3,22 +3,45 @@ import { UserContext } from "../../contexts/user/user.context";
 import { WordContext } from "../../contexts/word/word.context";
 import { InteractionModeAndDataContext } from "../../contexts/interactionModeAndData/interactionModeAndData.context";
 import ProfileIcon from "../profileIcon/profileIcon.component";
-import { openaiReply, openaiCorrection } from "../../utils/api/openaiAPI.utils";
-import { INTERACTIONMODE } from "../../utils/titles/titles.utils";
-import { INTERACTIONSPEAKER } from "../../utils/titles/titles.utils";
-import './interactionDisplayBox.styles.scss';
+import { openaiReply, openaiCorrection, openaiComposer } from "../../utils/api/openaiAPI.utils";
+import { INTERACTIONMODE, INTERACTIONSPEAKER } from "../../utils/titles/titles.utils";
 import InteractionInputBox from "../interactionInputBox/interactionInputBox.component";
+import { CAPTIONS } from "../../utils/titles/titles.utils";
+import './interactionDisplayBox.styles.scss';
+import InfoButton from "../infoButton/infoButton.component";
 
 const InteractionDisplayBox = () => {
-    const { currentMode } = useContext(InteractionModeAndDataContext);
-    const { conversationMsgs } = useContext(InteractionModeAndDataContext);
+    const { currentMode, conversationMsgs, addConversationMsgs, resetConversationMsgs } = useContext(InteractionModeAndDataContext);
     const { currentUser } = useContext(UserContext); 
-    const { addConversationMsgs, resetConversationMsgs } = useContext(InteractionModeAndDataContext);
+    const { todaySearchedWords, setTodaySearchedWords } = useContext(WordContext);
+    const [composerContent, setComposerContent] = useState('');
 
     const conversationOkClickHandler = async (msgText) => {
         if(!msgText) return;
         const aiCorrentionText = await openaiCorrection(msgText);
         console.log(msgText, aiCorrentionText);
+
+        const newTodaySearchedWords = todaySearchedWords.map((word) => {
+            const msg = msgText.toLowerCase().split(' ');
+            for (let piece of msg) {
+                if (piece.includes(word.text)){
+                    return {
+                        ...word,
+                        searchedWordsPoolMatched: true
+                    }
+                }
+            }
+            return word;
+        })
+        setTodaySearchedWords(newTodaySearchedWords);
+
+        addConversationMsgs([
+            {
+                speaker: INTERACTIONSPEAKER.USER, 
+                text: msgText
+            },
+        ]);
+
         // if (!stringComparison(msgText, aiCorrentionText)){
         //     addConversationMsgs([
         //         {
@@ -32,10 +55,6 @@ const InteractionDisplayBox = () => {
         const aiResponseText = await openaiReply(msgText);
         addConversationMsgs([
             {
-                speaker: INTERACTIONSPEAKER.USER, 
-                text: msgText
-            },
-            {
                 speaker: INTERACTIONSPEAKER.AI,
                 text: aiResponseText
             }
@@ -43,12 +62,33 @@ const InteractionDisplayBox = () => {
         // }
     }
 
-    const conversationClearClickHandler = () => {
+    const composerOkClickHandler = async () => {
+        console.log(todaySearchedWords);
+        const selected = todaySearchedWords.reduce((selectedWords, word) => {
+            if (word.searchedWordsPoolSelected){
+                return selectedWords += '\''+ word.text + '\', ';
+            }
+            return selectedWords;
+        }, '');
+        console.log(selected);
+        const aiComposerResponseText = await openaiComposer(selected);
+        setComposerContent(aiComposerResponseText);
+    }
+
+    const resetComposerContent = () => {
+        setComposerContent('');
+    }
+
+    const ClearClickHandler = () => {
         resetConversationMsgs();
+        resetComposerContent();
     }
     const conversationSection = () => {
         return (
-            <div>
+            <div className='interaction-display-container'>
+                <div className='info-button-wrapper'>
+                    <InfoButton infoContent={CAPTIONS.INTERACTIONINPUTCAPTIONS.CONVERSATIONMODE}/>
+                </div>
                 {conversationMsgs.map((msg) => (
                     <div
                         key = {k++}
@@ -63,27 +103,37 @@ const InteractionDisplayBox = () => {
                         {msg.speaker === INTERACTIONSPEAKER.AI? null : <ProfileIcon user = {currentUser}/>}
                     </div>
                 ))}
+                <InteractionInputBox 
+                    okClickHandler = {conversationOkClickHandler}
+                    clearClickHandler = {ClearClickHandler}
+                    caption = {CAPTIONS.INTERACTIONINPUTCAPTIONS.CONVERSATIONMODE}
+                />
             </div>
         )        
     }
-
-    console.log(conversationMsgs);
+    const composerSection = () => {
+        return (
+            <div className='interaction-display-container'>
+                <div className='info-button-wrapper'>
+                    <InfoButton infoContent={CAPTIONS.INTERACTIONINPUTCAPTIONS.COMPOSERMODE}/>
+                </div>
+                {composerContent}
+                <InteractionInputBox 
+                    okClickHandler = {composerOkClickHandler}
+                    clearClickHandler = {ClearClickHandler}
+                    caption = {CAPTIONS.INTERACTIONINPUTCAPTIONS.COMPOSERMODE}
+                />
+            </div>
+        )
+    }
     let k = 0;
     return (
-        <div className='interaction-display-container'>
-            {
-            currentMode === INTERACTIONMODE.CONVERSATIONMODE?
-             conversationSection()
-            : currentMode === INTERACTIONMODE.COMPOSERMODE?
-            <div>composer</div>
-            :
-            <div>optimizer</div>
-            }
-            <InteractionInputBox 
-                okClickHandler = {conversationOkClickHandler}
-                clearClickHandler = {conversationClearClickHandler}
-            />
-        </div>
+        currentMode === INTERACTIONMODE.CONVERSATIONMODE?
+            conversationSection()
+        : currentMode === INTERACTIONMODE.COMPOSERMODE?
+            composerSection()
+        :
+        <div>optimizer</div>
     )
 }
 

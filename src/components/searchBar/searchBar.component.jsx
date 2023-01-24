@@ -21,7 +21,8 @@ const SearchBar = () => {
         setSearchedWord(value);
     }
     const searchHandler = () => {
-        fetch(dictionaryAPIUrlGen(searchedWord))
+        const thisSearchedWord = searchedWord.toLowerCase();
+        fetch(dictionaryAPIUrlGen(thisSearchedWord))
         .then(response => response.json().then(data => {
             console.log(data);
             if(!wordResponseValidation(data)){
@@ -29,8 +30,8 @@ const SearchBar = () => {
                 return;
             }
             setSearchedWordDefinition(dictionaryApiReponseParser(data));
-            addSearchedWord(searchedWord);
-            createOrUpdateWordDocument(searchedWord, currentUser.uid);
+            addSearchedWord(thisSearchedWord);
+            createOrUpdateWordDocument(thisSearchedWord, currentUser.uid);
         }))
         .catch(error => console.log(error))
     }

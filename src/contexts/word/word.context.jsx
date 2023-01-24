@@ -7,13 +7,15 @@ export const WordContext = createContext({
     searchedWord: '',
     searchedWordDefinition: [],
     setSearchedWord: () => {},
-    setSearchedWordDefinition: () =>{},
+    setSearchedWordDefinition: () => {},
 })
 
 export const WordProvider = ({children}) => {
     const [todaySearchedWords, setTodaySearchedWords] = useState([]);
     const [searchedWord, setSearchedWord] = useState('');
     const [searchedWordDefinition, setSearchedWordDefinition] = useState([]);
+    const [conversationWords, setConversationWords] = useState(new Set());
+
     const addSearchedWord = (entry) => {
         if(entry === '' || todaySearchedWords.map(word => word.text).includes(entry))return;
         console.log(todaySearchedWords, entry);
@@ -21,7 +23,7 @@ export const WordProvider = ({children}) => {
             ...todaySearchedWords, 
             {
                 text: entry,
-                searchedWordsPoolSeleted: false,
+                searchedWordsPoolSelected: false,
                 searchedWordsPoolMatched: false,
             }
         ]);
@@ -32,7 +34,7 @@ export const WordProvider = ({children}) => {
         todaySearchedWords.forEach(word => {
             newArr.push({
                 text: word.text,
-                searchedWordsPoolSeleted: false,
+                searchedWordsPoolSelected: false,
                 searchedWordsPoolMatched: false,                
             });
         });

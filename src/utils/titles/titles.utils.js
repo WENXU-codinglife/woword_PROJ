@@ -16,3 +16,17 @@ export const INTERACTIONSPEAKER= {
     AI: 'AI',
     USER: 'USER',
 }
+
+export const CAPTIONS = {
+    INTERACTIONINPUTCAPTIONS: {
+        CONVERSATIONMODE: 'Have a chat with AI. Try to include your new words.',
+        COMPOSERMODE: 'Select any words in the pool and let AI compose a paragragh including them.',
+        OPTIMIZERMODE: 'Write your paragragh and let AI check it.',
+    },
+
+    INFOS: {
+        CONVERSATIONMODE: 'Have a chat with AI. Try to include your new words.',
+        COMPOSERMODE: 'Select any words in the pool and let AI compose a paragragh including them.',
+        OPTIMIZERMODE: 'Write your paragragh and let AI check it.',
+    }
+}

@@ -14,12 +14,11 @@ const WordButton = ( {word} ) => {
     const onClickHandler = () => {
         console.log('button onClickHandler');
         if ( currentMode === INTERACTIONMODE.COMPOSERMODE ){
-            const newArr = [];
-            todaySearchedWords.forEach((wd) => {
-                wd.text === word.text ? 
-                newArr.push({...word, searchedWordsPoolSelected:!word.searchedWordsPoolSelected}) 
+            const newArr = todaySearchedWords.map((wd) => {
+                return wd.text === word.text ? 
+                {...wd, searchedWordsPoolSelected:!wd.searchedWordsPoolSelected}
                 :
-                newArr.push(word);
+                wd;
             })
             setTodaySearchedWords(newArr);
         }
