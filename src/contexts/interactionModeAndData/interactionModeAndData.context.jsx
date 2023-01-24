@@ -6,8 +6,6 @@ import { WordContext } from "../word/word.context";
 export const InteractionModeAndDataContext = createContext({
     currentMode: INTERACTIONMODE.DEFAULT,
     setCurrentMode: () => {},
-    conversationMsgs: [],
-    addConversationMsgs: (msg) => {},
     resetConversationMsgs: () => {},
   });
 
@@ -20,10 +18,6 @@ export const InteractionModeAndDataContext = createContext({
     const [currentMode, setCurrentMode] = useState(INTERACTIONMODE.DEFAULT);
     const [conversationMsgs, setConversationMsgs] = useState([DEFAULT_PROMPT]);
     const { resetTodaySearchedWords } = useContext(WordContext);
-    
-    const addConversationMsgs = (msgs) => {
-      setConversationMsgs(conversationMsgs.concat(msgs));
-    } 
     const resetConversationMsgs = () => {
       setConversationMsgs([DEFAULT_PROMPT]);
     }
@@ -32,9 +26,6 @@ export const InteractionModeAndDataContext = createContext({
     const value = { 
       currentMode, 
       setCurrentMode, 
-      conversationMsgs, 
-      setConversationMsgs, 
-      addConversationMsgs, 
       resetConversationMsgs 
     };
     useEffect(() => {

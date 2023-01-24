@@ -41,6 +41,7 @@ const SearchBar = () => {
             <input 
                 className='search-input-box'
                 value={searchedWord}
+                placeholder='Search a word'
                 onChange={inputChangeHandler}
             />
             <button 

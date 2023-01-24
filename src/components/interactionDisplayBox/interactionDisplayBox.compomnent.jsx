@@ -11,15 +11,28 @@ import './interactionDisplayBox.styles.scss';
 import InfoButton from "../infoButton/infoButton.component";
 
 const InteractionDisplayBox = () => {
-    const { currentMode, conversationMsgs, addConversationMsgs, resetConversationMsgs } = useContext(InteractionModeAndDataContext);
+    const { currentMode } = useContext(InteractionModeAndDataContext);
+    const [conversationMsgs, setConversationMsgs] = useState([{speaker: INTERACTIONSPEAKER.AI, text:'Hello! How can I help you?'}]);
     const { currentUser } = useContext(UserContext); 
     const { todaySearchedWords, setTodaySearchedWords } = useContext(WordContext);
     const [composerContent, setComposerContent] = useState('');
 
+    const addConversationMsgs = (Msgs) => {
+        setConversationMsgs(conversationMsgs.concat(Msgs));
+    }
+    const resetConversationMsgs = () => {
+        setConversationMsgs([{speaker: INTERACTIONSPEAKER.AI, text:'Hello! How can I help you?'}]);
+    }
+
     const conversationOkClickHandler = async (msgText) => {
         if(!msgText) return;
         const aiCorrentionText = await openaiCorrection(msgText);
-        console.log(msgText, aiCorrentionText);
+        addConversationMsgs([
+            {
+                speaker: INTERACTIONSPEAKER.USER, 
+                text: msgText
+            },
+        ]);
 
         const newTodaySearchedWords = todaySearchedWords.map((word) => {
             const msg = msgText.toLowerCase().split(' ');
@@ -35,12 +48,6 @@ const InteractionDisplayBox = () => {
         })
         setTodaySearchedWords(newTodaySearchedWords);
 
-        addConversationMsgs([
-            {
-                speaker: INTERACTIONSPEAKER.USER, 
-                text: msgText
-            },
-        ]);
 
         // if (!stringComparison(msgText, aiCorrentionText)){
         //     addConversationMsgs([
@@ -54,6 +61,10 @@ const InteractionDisplayBox = () => {
         // }else{
         const aiResponseText = await openaiReply(msgText);
         addConversationMsgs([
+            {
+                speaker: INTERACTIONSPEAKER.USER, 
+                text: msgText
+            },
             {
                 speaker: INTERACTIONSPEAKER.AI,
                 text: aiResponseText
