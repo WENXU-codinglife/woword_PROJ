@@ -111,7 +111,7 @@ const InteractionDisplayBox = () => {
                         >
                             {msg.text}
                         </div>
-                        {msg.speaker === INTERACTIONSPEAKER.AI? null : <ProfileIcon user = {currentUser}/>}
+                        {msg.speaker === INTERACTIONSPEAKER.AI? null : <ProfileIcon size={PROFILEIAMGESIZE.X_SMALL} user = {currentUser}/>}
                     </div>
                 ))}
                 <InteractionInputBox 
