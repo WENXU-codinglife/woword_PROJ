@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+
 import {
     getAuth,
     signInWithRedirect,
@@ -26,7 +27,10 @@ import {
     query,
     where,
     FieldValue,
+    orderBy,
+    limit
 } from 'firebase/firestore';
+import { GAMEPLAY } from "../titles/titles.utils";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAzE5uO19xiTSp_Jb4gH5kIFZGT3L3YD1c",
@@ -128,6 +132,82 @@ export const createOrUpdateWordDocument = async (word, userId) => {
         );
     }else{
         console.log('Multiple word records error!', querySnapshot.length);
+    }
+}
+
+export const fetchCred = async (identifier) => {
+    let collectionName = 'credentials';
+    let docName = '';
+    if (identifier === 'openaiKey'){
+        docName = 'openai'
+    }else if (identifier === 'wmKey'){
+        docName = 'merriamwebsterdic';
+    }
+    const querySnapshot = await getDoc(doc(db, collectionName, docName));
+    let ans = '';
+    if(querySnapshot.size === 1){
+        querySnapshot.forEach((cred) => {
+            ans = cred.key;
+        })
+    }else{
+        console.log('credential fetching error!');
+    } 
+    return ans;
+}
+
+
+export const findOrCreateGame = async ( userId ) => {
+    const timestamp = new Date();
+    const gamesRef = collection(db, 'games');
+    const q = query(gamesRef, where('guest', '==', '/'), where('host', '!=', userId), limit(1));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot.size);
+    if(querySnapshot.size === 1){
+        let docRef = null;
+        querySnapshot.forEach( gameDoc => {
+            docRef = doc(db, 'games', gameDoc.id);
+        });
+        await updateDoc(docRef, {
+            guest: userId,
+        });
+        return {
+            player: GAMEPLAY.GUEST,
+            gameId: docRef.id
+        };
+        
+    }else{
+        const gameDocRef = await addDoc(
+            gamesRef,
+            {
+                createdAt: timestamp,
+                host: userId,
+                guest: '/',
+                history_myWord: [],
+                history_nextWord: [],
+                history_player: [],
+            }
+        );
+        return {
+            player: GAMEPLAY.HOST,
+            gameId: gameDocRef.id
+        };
+    };
+
+}
+
+export const pushMyWordAndNextWord = async ( myWord, nextWord, player, gameDocId ) => {
+    if (!gameDocId) return;
+    const gameDocRef = doc(db, 'games', gameDocId);
+    const gameSnapshot = await getDoc(gameDocRef);
+    if(gameSnapshot.exists()){
+        await setDoc(gameDocRef, {
+            ...gameSnapshot.data(),
+            history_player : gameSnapshot.data().history_player.concat([player]),
+            history_myWord: gameSnapshot.data().history_myWord.concat([myWord]),
+            history_nextWord: gameSnapshot.data().history_nextWord.concat([nextWord])
+        })
+    }else{
+        console.error('Game fetching error!');
     }
 }
 

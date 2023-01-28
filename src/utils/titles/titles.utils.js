@@ -30,3 +30,16 @@ export const CAPTIONS = {
         OPTIMIZERMODE: 'Write your paragragh and let AI check it.',
     }
 }
+
+export const PROFILEIAMGESIZE = {
+    X_LARGE: 'x-large',
+    LARGE: 'large',
+    NORMAL: 'normal',
+    SMALL: 'small',
+    X_SMALL: 'x-small',
+}
+
+export const GAMEPLAY = {
+    HOST: 'host',
+    GUEST: 'guest',
+}

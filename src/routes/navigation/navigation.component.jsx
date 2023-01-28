@@ -1,6 +1,6 @@
 import { Fragment, useContext } from "react";
 import { Outlet, Link } from 'react-router-dom';
-import { ReactComponent as Logo } from '../../assets/logo/crown.svg';
+import { ReactComponent as Logo } from '../../assets/logo/logo-no-background.svg';
 import { UserContext } from "../../contexts/user/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import ProfileIcon from "../../components/profileIcon/profileIcon.component";
@@ -20,6 +20,7 @@ const Navigation = () => {
                     <Logo className='logo' />
                 </Link>
                 <div className='nav-links-container'>
+                {<Link className='nav-link' to='/game'>Game</Link>}
                 {!currentUser?
                     <Link className='nav-link' to='/sign-up'>SIGN UP</Link>
                 :

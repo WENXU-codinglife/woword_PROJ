@@ -4,7 +4,7 @@ import { WordContext } from "../../contexts/word/word.context";
 import { InteractionModeAndDataContext } from "../../contexts/interactionModeAndData/interactionModeAndData.context";
 import ProfileIcon from "../profileIcon/profileIcon.component";
 import { openaiReply, openaiCorrection, openaiComposer } from "../../utils/api/openaiAPI.utils";
-import { INTERACTIONMODE, INTERACTIONSPEAKER } from "../../utils/titles/titles.utils";
+import { INTERACTIONMODE, INTERACTIONSPEAKER, PROFILEIAMGESIZE } from "../../utils/titles/titles.utils";
 import InteractionInputBox from "../interactionInputBox/interactionInputBox.component";
 import { CAPTIONS } from "../../utils/titles/titles.utils";
 import './interactionDisplayBox.styles.scss';
@@ -105,7 +105,7 @@ const InteractionDisplayBox = () => {
                         key = {k++}
                         className={`conversation-message-wrapper ${msg.speaker}`}
                     >
-                        {msg.speaker === INTERACTIONSPEAKER.AI? <ProfileIcon /> : null}
+                        {msg.speaker === INTERACTIONSPEAKER.AI? <ProfileIcon size={PROFILEIAMGESIZE.X_SMALL}/> : null}
                         <div 
                             className={`conversation-message-container ${msg.speaker}`}
                         >
