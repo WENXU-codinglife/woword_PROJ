@@ -20,7 +20,8 @@ const Navigation = () => {
                     <Logo className='logo' />
                 </Link>
                 <div className='nav-links-container'>
-                {<Link className='nav-link' to='/game'>Game</Link>}
+                {<Link className='nav-link' to='/'>HOME</Link>}
+                {<Link className='nav-link' to='/game'>GAME</Link>}
                 {!currentUser?
                     <Link className='nav-link' to='/sign-up'>SIGN UP</Link>
                 :

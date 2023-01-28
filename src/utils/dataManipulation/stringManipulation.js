@@ -77,3 +77,13 @@ export const aiResponseCleaner = (msg) => {
 export const stringComparison = (msg1, msg2) => {
     return msg1 === msg2;
 }
+
+export const oneLetterDiff = (str1, str2) => {
+    if(str1.length != str2.length)return false;
+    const arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    for(let i in str1){
+        arr[str1[i].charCodeAt() - 'A'.charCodeAt()] += 1;
+        arr[str2[i].charCodeAt() - 'A'.charCodeAt()] -= 1;
+    }
+    return Math.abs(arr.reduce((total, el) => total+el, 0)) === 1;
+}

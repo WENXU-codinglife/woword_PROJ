@@ -21,17 +21,22 @@
         }
 
         .word-history-container {
-            background-color: #ffffff;
             border-radius: 10px;
             width: 80%;
             height: 100%;
             align-self: center;
             display: flex;
-            font-size: x-large;
+            justify-content: space-between;
+            font-size: large;
             overflow-y: scroll;
-            flex-wrap: wrap;
-            .history-word {
-                padding-left: 10px;
+            .host-word-history {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .guest-word-history {
+                display: flex;
+                flex-direction: column;
             }
 
         }
@@ -45,12 +50,12 @@
         flex-direction: column;
         padding-top: 30px;
 
-        .comming-word-row {
+        .coming-word-row {
             display: flex;
             justify-content: space-between;
             padding-bottom: 10px;
             
-            .comming-word {
+            .coming-word {
                 display: flex;
             }
         }

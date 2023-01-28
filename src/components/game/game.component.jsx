@@ -4,7 +4,7 @@ import { UserContext } from '../../contexts/user/user.context';
 import ProfileIcon from '../../components/profileIcon/profileIcon.component';
 import { GAMEPLAY, PROFILEIAMGESIZE } from '../../utils/titles/titles.utils';
 import { dictionaryAPIUrlGen } from '../../utils/api/dictionaryAPI.utils';
-import { wordResponseValidation } from '../../utils/dataManipulation/stringManipulation';
+import { oneLetterDiff, wordResponseValidation } from '../../utils/dataManipulation/stringManipulation';
 import { db, findOrCreateGame, pushMyWordAndNextWord } from '../../utils/firebase/firebase.utils';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { doc } from 'firebase/firestore';
@@ -12,15 +12,16 @@ import './game.styles.scss';
 import { async } from '@firebase/util';
 
 const Game = ({player, endGame, gameDocId}) => {
-    const [nextWord, setNextWord] = useState('abcd');
+    const [nextWord, setNextWord] = useState('WOWORD');
     const [nextWordArray, setNextWordArray] = useState([]);
-    const [myWord, setMyWord] = useState('wordo');
+    const [myWord, setMyWord] = useState('WOWORD');
     const [myWordArray, setMyWordArray] = useState([]);
-    const [commingWord, setCommingWord] = useState('woword');
+    const [comingWord, setComingWord] = useState('WOWORD');
     const [myWordLocked, setMyWordLocked] = useState(false);
     const [nextWordLocked, setNextWordLocked] = useState(false);
     const [values, loading, error] = useDocumentData(doc(db, 'games', gameDocId));
     const [opponent, setOpponent] = useState('/');
+    const [wordHistory, setWordHistory] = useState([]);
 
 
     const recievedWord = 'worwo'
@@ -105,6 +106,10 @@ const Game = ({player, endGame, gameDocId}) => {
         const newMyWord = myWordArray.reduce((word, letter) => (
             word + letter.char
         ), '');
+        if(!oneLetterDiff(comingWord, newMyWord)){
+            alert('Your word should have exactly one letter difference than the coming one!');
+            return;
+        }
         fetch(dictionaryAPIUrlGen(newMyWord.toLowerCase()))
         .then(response => response.json().then(data => {
             if(!wordResponseValidation(data)){
@@ -121,6 +126,10 @@ const Game = ({player, endGame, gameDocId}) => {
         const newNextWord = nextWordArray.reduce((word, letter) => (
             word + letter.char
         ), '');
+        if(!oneLetterDiff(myWord, newNextWord)){
+            alert('Your word should have exactly one letter difference than the previous one!');
+            return;
+        }
         fetch(dictionaryAPIUrlGen(newNextWord.toLowerCase()))
         .then(response => response.json().then(data => {
             if(!wordResponseValidation(data)){
@@ -184,10 +193,14 @@ const Game = ({player, endGame, gameDocId}) => {
                 console.log(opponent);
                 setOpponent(values.guest);
             }else if(opponent !== '/'){ // during the game
-                console.log(values);
+                if(wordHistory[wordHistory.length-1] !== values.history_player[values.history_player.length-1])
+                    setWordHistory(wordHistory.concat([{
+                        player: values.history_player[values.history_player.length-1],
+                        word: values.history_myWord[values.history_myWord.length-1],
+                    }]));            
                 if((player === GAMEPLAY.HOST && values.history_player[values.history_player.length-1] === GAMEPLAY.GUEST) || (player === GAMEPLAY.GUEST && values.history_player[values.history_player.length-1] === GAMEPLAY.HOST)){
                     console.log(values.history_myWord[values.history_myWord.length-1], values.history_nextWord[values.history_nextWord.length-1]);
-                    setCommingWord(values.history_myWord[values.history_myWord.length-1]);
+                    setComingWord(values.history_myWord[values.history_myWord.length-1]);
                     setMyWord(values.history_nextWord[values.history_nextWord.length-1]);
                     setMyWordLocked(false);
                     setNextWordLocked(false);
@@ -207,17 +220,27 @@ const Game = ({player, endGame, gameDocId}) => {
                     <ProfileIcon size={PROFILEIAMGESIZE.X_LARGE}/>
                 </div>
                 <div className='word-history-container'>
-                    {/* {wordHistory.map((word) => (
-                        <div className='history-word'>{word}</div>
-                    ))
-                    } */}
+                    <div className='host-word-history'>
+                        {
+                            wordHistory.map((word) => {
+                                if(word.player === GAMEPLAY.HOST)return <div>{word.word}</div>;
+                            })
+                        }
+                    </div>
+                    <div className='guest-word-history'>
+                    {
+                            wordHistory.map((word) => {
+                                if(word.player === GAMEPLAY.GUEST)return <div>{word.word}</div>;
+                            })
+                        }
+                    </div>
                 </div>
             </div>
             <div className='playground-container'>
-                <div className='comming-word-row'>
-                    <div className='comming-word'>
+                <div className='coming-word-row'>
+                    <div className='coming-word'>
                         {
-                            commingWord.split('').map((char, index) => 
+                            comingWord.split('').map((char, index) => 
                             <button
                                 key={index}
                                 className = 'letter-key unfocused unkey'
