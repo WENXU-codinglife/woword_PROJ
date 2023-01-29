@@ -79,11 +79,18 @@ export const stringComparison = (msg1, msg2) => {
 }
 
 export const oneLetterDiff = (str1, str2) => {
-    if(str1.length != str2.length)return false;
+    if(Math.abs(str1.length - str2.length) > 1)return false;
     const arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     for(let i in str1){
         arr[str1[i].charCodeAt() - 'A'.charCodeAt()] += 1;
         arr[str2[i].charCodeAt() - 'A'.charCodeAt()] -= 1;
     }
-    return Math.abs(arr.reduce((total, el) => total+el, 0)) === 1;
+    const ans = arr.map((el) => {
+        if (el !== 0)return el;
+    });
+    if(ans.length > 2)return false;
+    for(let i in ans){
+        if(Math.abs(ans[i]) !== 1)return false;
+    }
+    return true;
 }

@@ -107,7 +107,8 @@ const Game = ({player, endGame, gameDocId}) => {
             word + letter.char
         ), '');
         if(!oneLetterDiff(comingWord, newMyWord)){
-            alert('Your word should have exactly one letter difference than the coming one!');
+            console.log(comingWord, newMyWord);
+            alert(`Your word should have exactly one letter difference than the coming one!\n${comingWord}, ${newMyWord}`);
             return;
         }
         fetch(dictionaryAPIUrlGen(newMyWord.toLowerCase()))
@@ -210,7 +211,7 @@ const Game = ({player, endGame, gameDocId}) => {
     },[values])
     return (
         opponent === '/'?
-        <div>Waiting For Your Opponent</div>
+        <span>Waiting For Your Opponent</span>
         :
         <div className='game-container'>
             <div className='profiles-word-history-container'>

@@ -3,12 +3,13 @@ import { UserContext } from "../../contexts/user/user.context";
 import { WordContext } from "../../contexts/word/word.context";
 import { InteractionModeAndDataContext } from "../../contexts/interactionModeAndData/interactionModeAndData.context";
 import ProfileIcon from "../profileIcon/profileIcon.component";
-import { openaiReply, openaiCorrection, openaiComposer } from "../../utils/api/openaiAPI.utils";
+import { openaiReply, openaiCorrection, openaiComposer, openaiOptimizer } from "../../utils/api/openaiAPI.utils";
 import { INTERACTIONMODE, INTERACTIONSPEAKER, PROFILEIAMGESIZE } from "../../utils/titles/titles.utils";
 import InteractionInputBox from "../interactionInputBox/interactionInputBox.component";
 import { CAPTIONS } from "../../utils/titles/titles.utils";
 import './interactionDisplayBox.styles.scss';
 import InfoButton from "../infoButton/infoButton.component";
+import { async } from "@firebase/util";
 
 const InteractionDisplayBox = () => {
     const { currentMode } = useContext(InteractionModeAndDataContext);
@@ -16,6 +17,7 @@ const InteractionDisplayBox = () => {
     const { currentUser } = useContext(UserContext); 
     const { todaySearchedWords, setTodaySearchedWords } = useContext(WordContext);
     const [composerContent, setComposerContent] = useState('');
+    const [optimizerContent, setOptimizerContent] = useState([]);
 
     const addConversationMsgs = (Msgs) => {
         setConversationMsgs(conversationMsgs.concat(Msgs));
@@ -89,10 +91,21 @@ const InteractionDisplayBox = () => {
     const resetComposerContent = () => {
         setComposerContent('');
     }
+    const resetOptimizerContent = () => {
+        setComposerContent([]);
+    }
 
     const ClearClickHandler = () => {
         resetConversationMsgs();
         resetComposerContent();
+        resetOptimizerContent();
+    }
+
+    const optimizerOkClickHandler = async (msgText) => {
+        if(!msgText)return;
+        setOptimizerContent(optimizerContent.concat([msgText]));
+        const aiOptimizerResponseText = await openaiOptimizer(msgText);
+        setOptimizerContent(optimizerContent.concat([aiOptimizerResponseText]));
     }
     const conversationSection = () => {
         return (
@@ -100,9 +113,10 @@ const InteractionDisplayBox = () => {
                 <div className='info-button-wrapper'>
                     <InfoButton infoContent={CAPTIONS.INTERACTIONINPUTCAPTIONS.CONVERSATIONMODE}/>
                 </div>
-                {conversationMsgs.map((msg) => (
+                <div className='message-box'>
+                {conversationMsgs.map((msg,index) => (
                     <div
-                        key = {k++}
+                        key = {index}
                         className={`conversation-message-wrapper ${msg.speaker}`}
                     >
                         {msg.speaker === INTERACTIONSPEAKER.AI? <ProfileIcon size={PROFILEIAMGESIZE.X_SMALL}/> : null}
@@ -114,6 +128,7 @@ const InteractionDisplayBox = () => {
                         {msg.speaker === INTERACTIONSPEAKER.AI? null : <ProfileIcon size={PROFILEIAMGESIZE.X_SMALL} user = {currentUser}/>}
                     </div>
                 ))}
+                </div>
                 <InteractionInputBox 
                     okClickHandler = {conversationOkClickHandler}
                     clearClickHandler = {ClearClickHandler}
@@ -128,7 +143,7 @@ const InteractionDisplayBox = () => {
                 <div className='info-button-wrapper'>
                     <InfoButton infoContent={CAPTIONS.INTERACTIONINPUTCAPTIONS.COMPOSERMODE}/>
                 </div>
-                {composerContent}
+                <div className='message-box'>{composerContent}</div>
                 <InteractionInputBox 
                     okClickHandler = {composerOkClickHandler}
                     clearClickHandler = {ClearClickHandler}
@@ -137,14 +152,33 @@ const InteractionDisplayBox = () => {
             </div>
         )
     }
-    let k = 0;
+    const optimizerSection = () => {
+        return (
+            <div className='interaction-display-container'>
+                <div className='info-button-wrapper'>
+                    <InfoButton infoContent={CAPTIONS.INTERACTIONINPUTCAPTIONS.OPTIMIZERMODE}/>
+                </div>
+                <div className='message-box'>
+                    {optimizerContent.map((msg,index) => (
+                        <div key={index}>{msg}</div>
+                    ))}
+                </div>
+                <InteractionInputBox 
+                    okClickHandler = {optimizerOkClickHandler}
+                    clearClickHandler = {ClearClickHandler}
+                    caption = {CAPTIONS.INTERACTIONINPUTCAPTIONS.OPTIMIZERMODE}
+                />
+            </div>            
+        )
+    }
     return (
         currentMode === INTERACTIONMODE.CONVERSATIONMODE?
             conversationSection()
         : currentMode === INTERACTIONMODE.COMPOSERMODE?
             composerSection()
-        :
-        <div>optimizer</div>
+        : currentMode === INTERACTIONMODE.OPTIMIZERMODE?
+            optimizerSection()
+        : null
     )
 }
 

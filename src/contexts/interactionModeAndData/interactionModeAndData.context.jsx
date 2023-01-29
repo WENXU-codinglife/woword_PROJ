@@ -15,7 +15,7 @@ export const InteractionModeAndDataContext = createContext({
   };
   
   export const InteractionModeAndDataProvider = ({ children }) => {
-    const [currentMode, setCurrentMode] = useState(INTERACTIONMODE.DEFAULT);
+    const [currentMode, setCurrentMode] = useState(INTERACTIONMODE.CONVERSATIONMODE);
     const [conversationMsgs, setConversationMsgs] = useState([DEFAULT_PROMPT]);
     const { resetTodaySearchedWords } = useContext(WordContext);
     const resetConversationMsgs = () => {

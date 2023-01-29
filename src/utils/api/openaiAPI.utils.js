@@ -61,3 +61,18 @@ export const openaiComposer = async (selectedWords) => {
   });
   return response.data.choices[0].text;  
 }
+
+export const openaiOptimizer = async (paragraph) => {
+  const queryMsg = `Can you check and optimizer this paragraph: ${paragraph}.`;
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: queryMsg,
+    temperature: 0.9,
+    max_tokens: 800,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0.6,
+    stop: [" Human:", " AI:"],
+  });
+  return response.data.choices[0].text;  
+}

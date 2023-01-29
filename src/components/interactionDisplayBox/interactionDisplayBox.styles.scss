@@ -1,53 +1,62 @@
 .interaction-display-container {
     display: flex;
     flex-direction: column;
-    overflow:scroll;
+    
     background-color: rgba(217, 217, 217, 0.3);
+    
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     flex-grow: 1;
     padding: 20px;
     position: relative;
-
-
     .info-button-wrapper {
         position: absolute;
         right: 10px;
         top: 5px;
+        
     }
-    .conversation-message-wrapper {
-        display: flex;
-        height: auto;
-        &.AI {
-            justify-content: flex-start;
-        }
-        &.USER {
-            justify-content: flex-end;
-        }
-
-        .conversation-message-container {
-            font-size:large;
-            width:fit-content;
-            height: fit-content;
-            max-width: 60%;
-            padding-left: 12px;
-            padding-right: 12px;
-            border-radius: 10px;
-            margin: 10px;
-            padding: 5px;
-            padding-left: 10px;
-            padding-right: 10px;
+    .message-box {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        padding-right: 40px;
+        overflow:scroll;
+        padding-top: 20px;
+        .conversation-message-wrapper {
+            display: flex;
+            height: auto;
             &.AI {
-                background-color: white;
-                
+                justify-content: flex-start;
+            }
+            &.USER {
+                justify-content: flex-end;
             }
     
-            &.USER {
-                
-                background-color: #00ff19;
+            .conversation-message-container {
+                font-size:large;
+                width:fit-content;
+                height: fit-content;
+                max-width: 60%;
+                padding-left: 12px;
+                padding-right: 12px;
+                border-radius: 10px;
+                margin: 10px;
+                padding: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+                &.AI {
+                    background-color: white;
+                    
+                }
+        
+                &.USER {
+                    
+                    background-color: #00ff19;
+                }
             }
+    
         }
-
     }
 }

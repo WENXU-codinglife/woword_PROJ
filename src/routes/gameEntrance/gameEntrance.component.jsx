@@ -37,7 +37,10 @@ const GameEntrance = () => {
                     endGame = {endGameHandler}
                 />
             :
-                <button className='operation-button' onClick={startHandler}>Start A Game</button>
+                <div className='game-entrance-container'>
+                    <button className='operation-button' onClick={startHandler} disabled={!currentUser}>Start A Game</button>
+                    {!currentUser && <span>You have to log in then you can play this game!</span>}
+                </div>
             
         // </div>
     )
