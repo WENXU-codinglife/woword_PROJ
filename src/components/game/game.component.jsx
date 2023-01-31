@@ -10,21 +10,19 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { doc } from 'firebase/firestore';
 import './game.styles.scss';
 import { async } from '@firebase/util';
+import { randomWordGen } from '../../utils/api/openaiAPI.utils';
 
 const Game = ({player, endGame, gameDocId}) => {
-    const [nextWord, setNextWord] = useState('WOWORD');
+    const [nextWord, setNextWord] = useState('WAIT');
     const [nextWordArray, setNextWordArray] = useState([]);
-    const [myWord, setMyWord] = useState('WOWORD');
+    const [myWord, setMyWord] = useState('WAIT');
     const [myWordArray, setMyWordArray] = useState([]);
-    const [comingWord, setComingWord] = useState('WOWORD');
+    const [comingWord, setComingWord] = useState(player === GAMEPLAY.HOST? randomWordGen().toUpperCase():'WAITING');
     const [myWordLocked, setMyWordLocked] = useState(false);
     const [nextWordLocked, setNextWordLocked] = useState(false);
     const [values, loading, error] = useDocumentData(doc(db, 'games', gameDocId));
     const [opponent, setOpponent] = useState('/');
     const [wordHistory, setWordHistory] = useState([]);
-
-
-    const recievedWord = 'worwo'
 
     const letterKeys = [
         { char: 'A' },

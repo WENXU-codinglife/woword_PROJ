@@ -96,16 +96,6 @@ export const onAuthStateChangedLister = (callback) => {
     onAuthStateChanged(auth, callback);
 }
 
-/*
-word doc
-{
-    text: 
-    firstTimestamp:
-    latestTimestamp:
-    count:
-    user: 
-}
-*/
 export const createOrUpdateWordDocument = async (word, userId) => {
     const timestamp = new Date();
     const wordsRef = collection(db, 'words');
@@ -134,27 +124,6 @@ export const createOrUpdateWordDocument = async (word, userId) => {
         console.log('Multiple word records error!', querySnapshot.length);
     }
 }
-
-export const fetchCred = async (identifier) => {
-    let collectionName = 'credentials';
-    let docName = '';
-    if (identifier === 'openaiKey'){
-        docName = 'openai'
-    }else if (identifier === 'wmKey'){
-        docName = 'merriamwebsterdic';
-    }
-    const querySnapshot = await getDoc(doc(db, collectionName, docName));
-    let ans = '';
-    if(querySnapshot.size === 1){
-        querySnapshot.forEach((cred) => {
-            ans = cred.key;
-        })
-    }else{
-        console.log('credential fetching error!');
-    } 
-    return ans;
-}
-
 
 export const findOrCreateGame = async ( userId ) => {
     const timestamp = new Date();

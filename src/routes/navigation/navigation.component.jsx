@@ -5,6 +5,7 @@ import { UserContext } from "../../contexts/user/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import ProfileIcon from "../../components/profileIcon/profileIcon.component";
 import './navigation.styles.scss';
+import { PROFILEIAMGESIZE } from "../../utils/titles/titles.utils";
 
 const Navigation = () => {
     const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -28,7 +29,7 @@ const Navigation = () => {
                     <span className='nav-link' onClick={signOutHandler}>SIGN OUT</span>
                 }
                 {currentUser? (
-                    <ProfileIcon user={currentUser}/>
+                    <ProfileIcon size={PROFILEIAMGESIZE.X_SMALL} user={currentUser}/>
                 ) : (
                     <Link className='nav-link' to='/sign-in'>
                     SIGN IN
