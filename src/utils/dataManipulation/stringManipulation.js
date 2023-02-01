@@ -83,11 +83,14 @@ export const oneLetterDiff = (str1, str2) => {
     const arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     for(let i in str1){
         arr[str1[i].charCodeAt() - 'A'.charCodeAt()] += 1;
+    }
+    for(let i in str2){
         arr[str2[i].charCodeAt() - 'A'.charCodeAt()] -= 1;
     }
-    const ans = arr.map((el) => {
-        if (el !== 0)return el;
-    });
+    const ans = arr.reduce((ans, el) => 
+        el === 0? ans:[...ans, el]
+    , []);
+    console.log(ans);
     if(ans.length > 2)return false;
     for(let i in ans){
         if(Math.abs(ans[i]) !== 1)return false;

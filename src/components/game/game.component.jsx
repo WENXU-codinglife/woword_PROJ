@@ -17,7 +17,7 @@ const Game = ({player, endGame, gameDocId}) => {
     const [nextWordArray, setNextWordArray] = useState([]);
     const [myWord, setMyWord] = useState('WAIT');
     const [myWordArray, setMyWordArray] = useState([]);
-    const [comingWord, setComingWord] = useState(player === GAMEPLAY.HOST? randomWordGen().toUpperCase():'WAITING');
+    const [comingWord, setComingWord] = useState('');
     const [myWordLocked, setMyWordLocked] = useState(false);
     const [nextWordLocked, setNextWordLocked] = useState(false);
     const [values, loading, error] = useDocumentData(doc(db, 'games', gameDocId));
@@ -87,14 +87,24 @@ const Game = ({player, endGame, gameDocId}) => {
     };
     const keyOnClickHandler = (event) => {
         event.preventDefault();
-        setMyWordArray(myWordArray.map((letter) => {
-            if(letter.isFocused === 'focused')
-                return {...letter, char:event.target.value};
+        let index = -1;
+        setMyWordArray(myWordArray.map((letter, idx) => {
+            if(letter.isFocused === 'focused' && index === -1){
+                index = idx + 1;
+                return {...letter, char:event.target.value, isFocused:'unfocused'};
+            }else if (idx === index){
+                return {...letter, isFocused: 'focused'}
+            }
             return {...letter}            
         }))
-        setNextWordArray(nextWordArray.map((letter) => {
-            if(letter.isFocused === 'focused')
-                return {...letter, char:event.target.value};
+        index = -1;
+        setNextWordArray(nextWordArray.map((letter, idx) => {
+            if(letter.isFocused === 'focused'){
+                index = idx + 1;
+                return {...letter, char:event.target.value, isFocused:'unfocused'};
+            }else if (idx === index) {
+                return {...letter, isFocused: 'focused'}
+            }
             return {...letter}            
         }))
     };
@@ -103,7 +113,8 @@ const Game = ({player, endGame, gameDocId}) => {
         event.preventDefault();
         const newMyWord = myWordArray.reduce((word, letter) => (
             word + letter.char
-        ), '');
+            ), '');
+        console.log(newMyWord, comingWord);
         if(!oneLetterDiff(comingWord, newMyWord)){
             console.log(comingWord, newMyWord);
             alert(`Your word should have exactly one letter difference than the coming one!\n${comingWord}, ${newMyWord}`);
@@ -136,7 +147,8 @@ const Game = ({player, endGame, gameDocId}) => {
                 return;
             }
             setNextWord(true);
-            setNextWord(newNextWord)
+            setNextWord(newNextWord);
+            pushMyWordAndNextWord(myWord, newNextWord, player, gameDocId);
         }))
     }
 
@@ -169,42 +181,35 @@ const Game = ({player, endGame, gameDocId}) => {
 
 
     useEffect(() => {
-        setMyWordArray(myWord.split('').map((char, index) => ({
-            char:' ',
-            isFocused: 'unfocused',
-            position: index,
-        }))); 
-    }, [myWord]);
-    useEffect(() => {
-        setNextWordArray(nextWord.split('').map((char, index) => ({
-            char:'',
-            isFocused: 'unfocused',
-            position: index,
-        }))); 
-    }, [nextWord]);
-    useEffect(() => {
-        console.log(gameDocId);
-        pushMyWordAndNextWord(myWord, nextWord, player, gameDocId);
-    }, [nextWord]);
-    useEffect(() => {
         if(values){
             if(values.guest !== opponent){ // 2 players matched, start the game
                 console.log(opponent);
                 setOpponent(values.guest);
-            }else if(opponent !== '/'){ // during the game
-                if(wordHistory[wordHistory.length-1] !== values.history_player[values.history_player.length-1])
-                    setWordHistory(wordHistory.concat([{
-                        player: values.history_player[values.history_player.length-1],
-                        word: values.history_myWord[values.history_myWord.length-1],
-                    }]));            
-                if((player === GAMEPLAY.HOST && values.history_player[values.history_player.length-1] === GAMEPLAY.GUEST) || (player === GAMEPLAY.GUEST && values.history_player[values.history_player.length-1] === GAMEPLAY.HOST)){
-                    console.log(values.history_myWord[values.history_myWord.length-1], values.history_nextWord[values.history_nextWord.length-1]);
-                    setComingWord(values.history_myWord[values.history_myWord.length-1]);
-                    setMyWord(values.history_nextWord[values.history_nextWord.length-1]);
-                    setMyWordLocked(false);
-                    setNextWordLocked(false);
-                }
             }
+            console.log(values);
+            if(wordHistory[wordHistory.length-1] !== values.history_player[values.history_player.length-1])
+                setWordHistory(wordHistory.concat([{
+                    player: values.history_player[values.history_player.length-1],
+                    word: values.history_myWord[values.history_myWord.length-1],
+                }]));            
+            if((player === GAMEPLAY.HOST && values.history_player[values.history_player.length-1] === GAMEPLAY.GUEST) || (player === GAMEPLAY.GUEST && values.history_player[values.history_player.length-1] === GAMEPLAY.HOST)){
+                console.log(values.history_myWord[values.history_myWord.length-1], values.history_nextWord[values.history_nextWord.length-1]);
+                setComingWord(values.history_myWord[values.history_myWord.length-1]);
+                setMyWord(values.history_nextWord[values.history_nextWord.length-1]);
+                setMyWordArray(values.history_nextWord[values.history_nextWord.length-1].split('').map((char, index) => ({
+                    char:' ',
+                    isFocused: 'unfocused',
+                    position: index,
+                })));
+                setMyWordLocked(false);
+                setNextWordArray(nextWord.split('').map((char, index) => ({
+                    char:'',
+                    isFocused: 'unfocused',
+                    position: index,
+                }))); 
+                setNextWordLocked(false);
+            }
+            
         }
     },[values])
     return (
@@ -260,6 +265,7 @@ const Game = ({player, endGame, gameDocId}) => {
                             className = {`letter-key ${letter.isFocused} unkey`}
                             data-object={JSON.stringify(letter)} 
                             onClick={myWordClickHandler}
+                            disabled={myWordLocked}
                         >
                             {letter.char}
                         </button>)
@@ -281,6 +287,7 @@ const Game = ({player, endGame, gameDocId}) => {
                                 className = {`letter-key ${letter.isFocused} unkey`}
                                 data-object={JSON.stringify(letter)} 
                                 onClick={nextWordClickHandler}
+                                disabled={nextWordLocked}
                             >
                                 {letter.char}
                             </button>)

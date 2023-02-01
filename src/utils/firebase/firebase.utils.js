@@ -30,6 +30,7 @@ import {
     orderBy,
     limit
 } from 'firebase/firestore';
+import { randomWordGen } from "../api/openaiAPI.utils";
 import { GAMEPLAY } from "../titles/titles.utils";
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -151,9 +152,9 @@ export const findOrCreateGame = async ( userId ) => {
                 createdAt: timestamp,
                 host: userId,
                 guest: '/',
-                history_myWord: [],
-                history_nextWord: [],
-                history_player: [],
+                history_myWord: [randomWordGen(5),],
+                history_nextWord: [randomWordGen(5),],
+                history_player: [GAMEPLAY.GUEST],
             }
         );
         return {

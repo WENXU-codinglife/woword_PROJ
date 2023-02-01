@@ -77,7 +77,7 @@ export const openaiOptimizer = async (paragraph) => {
   return response.data.choices[0].text;  
 }
 
-export const randomWordGen = () => {
+export const randomWordGen = (size) => {
   const pool = ['Love',
   'Cook',
   'Hope',
@@ -178,5 +178,7 @@ export const randomWordGen = () => {
   'Chuck',
   'Chug',
   'Cinch',]
-  return pool[Math.floor(Math.random() * 100)] ;
+  let word = '';
+  while(word.length !== 5)word = pool[Math.floor(Math.random() * 100)]
+  return  word.toUpperCase();
 }
