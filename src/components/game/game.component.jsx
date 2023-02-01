@@ -111,6 +111,7 @@ const Game = ({player, endGame, gameDocId}) => {
 
     const myWordSubmitHandler = (event) => {
         event.preventDefault();
+        if(myWordLocked)return;
         const newMyWord = myWordArray.reduce((word, letter) => (
             word + letter.char
             ), '');
@@ -133,6 +134,7 @@ const Game = ({player, endGame, gameDocId}) => {
     }
     const nextWordSubmitHandler = (event) => {
         event.preventDefault();
+        if(nextWordLocked)return;
         const newNextWord = nextWordArray.reduce((word, letter) => (
             word + letter.char
         ), '');
@@ -148,6 +150,7 @@ const Game = ({player, endGame, gameDocId}) => {
             }
             setNextWord(true);
             setNextWord(newNextWord);
+            setNextWordLocked(true);
             pushMyWordAndNextWord(myWord, newNextWord, player, gameDocId);
         }))
     }
@@ -231,6 +234,7 @@ const Game = ({player, endGame, gameDocId}) => {
                             })
                         }
                     </div>
+                    <span>{values.history_player[values.history_player.length-1] === GAMEPLAY.GUEST? GAMEPLAY.HOST.toUpperCase():GAMEPLAY.GUEST.toUpperCase()}'s turn</span>
                     <div className='guest-word-history'>
                     {
                             wordHistory.map((word) => {
