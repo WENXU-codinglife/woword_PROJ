@@ -115,6 +115,10 @@ const Game = ({player, endGame, gameDocId}) => {
         const newMyWord = myWordArray.reduce((word, letter) => (
             word + letter.char
             ), '');
+        if(newMyWord in values.history_myWord){
+            alert(`${newMyWord.toUpperCase()} has occurred! Try another word!`);
+            return;
+        }
         console.log(newMyWord, comingWord);
         if(!oneLetterDiff(comingWord, newMyWord)){
             console.log(comingWord, newMyWord);
@@ -138,6 +142,10 @@ const Game = ({player, endGame, gameDocId}) => {
         const newNextWord = nextWordArray.reduce((word, letter) => (
             word + letter.char
         ), '');
+        if(newNextWord in values.history_myWord){
+            alert(`${newNextWord.toUpperCase()} has occurred! Try another word!`);
+            return;
+        }
         if(!oneLetterDiff(myWord, newNextWord)){
             alert('Your word should have exactly one letter difference than the previous one!');
             return;
