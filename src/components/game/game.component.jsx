@@ -157,6 +157,7 @@ const Game = ({player, endGame, gameDocId}) => {
 
     const incrementHandler = (event) => {
         event.preventDefault();
+        if(nextWordLocked)return;
         setNextWordArray((myWord+' ').split('').map((char, index) => ({
             char:' ',
             isFocused: 'unfocused',
@@ -166,6 +167,7 @@ const Game = ({player, endGame, gameDocId}) => {
 
     const decrementHandler = (event) => {
         event.preventDefault();
+        if(nextWordLocked)return;
         setNextWordArray(myWord.slice(0,-1).split('').map((char, index) => ({
             char:' ',
             isFocused: 'unfocused',
@@ -175,6 +177,7 @@ const Game = ({player, endGame, gameDocId}) => {
 
     const replaceHandler = (event) => {
         event.preventDefault();
+        if(nextWordLocked)return;
         setNextWordArray(myWord.split('').map((char, index) => ({
             char:' ',
             isFocused: 'unfocused',

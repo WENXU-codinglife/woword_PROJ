@@ -91,7 +91,7 @@ export const oneLetterDiff = (str1, str2) => {
         el === 0? ans:[...ans, el]
     , []);
     console.log(ans);
-    if(ans.length > 2)return false;
+    if(ans.length > 2 || ans.length === 0)return false;
     for(let i in ans){
         if(Math.abs(ans[i]) !== 1)return false;
     }
