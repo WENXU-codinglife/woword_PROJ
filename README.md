@@ -1,70 +1,24 @@
-# Getting Started with Create React App
+# WOWORD - A PERSONAL PROJECT USING REACT AND FIREBASE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+This web app is built up using React (Hooks, Router, etc.), Firebase (Anthentication, Firestore, etc.) and REST APIs (Merriam-Webster Dictionary API and OpenAI API). It is deployed on Netlify. Welcome to [WOWORD](https://bright-fox-1181ef.netlify.app/). 
 
-In the project directory, you can run:
+The app is designed to help users bulid up their English vocabulary and have better understanding of new words.
 
-### `npm start`
+## Look Up a Word
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+You can look up a word you don't understand. It will provides you with definitions and examples. This functionality is powered by [Merriam-Webster Dictionary API](https://dictionaryapi.com/).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## AI Interaction
 
-### `npm test`
+- Try to use the new words you just searched to have a chat with our AI bot. It is an effecient way to have a deeper understanding by including the words in your conversation.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- You can also ask the AI to compose a short paragraph that includes the new words you pick. This can provide you with more practical examples of how to use the words.
 
-### `npm run build`
+- Another functionality powered by AI is optimization. It can help you by revising and paraphasing your own writing.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The AI section is powered by [OpenAI](https://openai.com/api/).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Game
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section provides users with an intereting and relaxing word game that involves 2 players. The players will be paired randomly.
