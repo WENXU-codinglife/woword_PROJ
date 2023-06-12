@@ -21,4 +21,4 @@ The AI section is powered by [OpenAI](https://openai.com/api/).
 
 ### Game
 
-This section provides users with an intereting and relaxing word game that involves 2 players. The players will be paired randomly.
+This section provides users with an intereting and relaxing word game that involves 2 players. The players will be paired randomly and try the best to make a long sequence of words. Please open the app and check it out.
