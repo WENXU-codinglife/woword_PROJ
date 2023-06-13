@@ -3,13 +3,12 @@ import { UserContext } from "../../contexts/user/user.context";
 import { WordContext } from "../../contexts/word/word.context";
 import { InteractionModeAndDataContext } from "../../contexts/interactionModeAndData/interactionModeAndData.context";
 import ProfileIcon from "../profileIcon/profileIcon.component";
-import { openaiReply, openaiCorrection, openaiComposer, openaiOptimizer } from "../../utils/api/openaiAPI.utils";
+import { openaiReply, openaiComposer, openaiOptimizer } from "../../utils/api/openaiAPI.utils";
 import { INTERACTIONMODE, INTERACTIONSPEAKER, PROFILEIAMGESIZE } from "../../utils/titles/titles.utils";
 import InteractionInputBox from "../interactionInputBox/interactionInputBox.component";
 import { CAPTIONS } from "../../utils/titles/titles.utils";
 import './interactionDisplayBox.styles.scss';
 import InfoButton from "../infoButton/infoButton.component";
-import { async } from "@firebase/util";
 
 const InteractionDisplayBox = () => {
     const { currentMode } = useContext(InteractionModeAndDataContext);
@@ -28,7 +27,7 @@ const InteractionDisplayBox = () => {
 
     const conversationOkClickHandler = async (msgText) => {
         if(!msgText) return;
-        const aiCorrentionText = await openaiCorrection(msgText);
+        // const aiCorrentionText = await openaiCorrection(msgText);
         addConversationMsgs([
             {
                 speaker: INTERACTIONSPEAKER.USER, 

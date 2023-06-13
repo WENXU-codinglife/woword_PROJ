@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import infoIcon from '../../assets/icon/info.png';
 import './infoButton.styles.scss';
 
@@ -19,7 +19,7 @@ const InfoButton = ({ infoContent }) => {
                 onMouseEnter = {handleMouseEnter}
                 onMouseLeave = {handleMouseLeave}
             >
-                <img src={infoIcon}/>
+                <img src={infoIcon} alt=''/>
                 {infoIsShown && 
                     <div className='info-content'>
                         {infoContent}
