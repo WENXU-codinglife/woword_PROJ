@@ -1,5 +1,9 @@
 # WOWORD - A PERSONAL PROJECT USING REACT AND FIREBASE
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/448fd07e-2f82-4bcd-a41e-9da945ece5b9/deploy-status)](https://app.netlify.com/sites/bright-fox-1181ef/deploys)
+![CI/CD](https://github.com/WENXU-codinglife/woword_PROJ/workflows/CI/CD/badge.svg)
+![License](https://img.shields.io/github/license/dyarleniber/react-workflow-gh-actions)
+
 
 This web app is built up using React (Hooks, Router, etc.), Firebase (Anthentication, Firestore, etc.) and REST APIs (Merriam-Webster Dictionary API and OpenAI API). It is deployed on Netlify. Welcome to [WOWORD](https://bright-fox-1181ef.netlify.app/). 
 
