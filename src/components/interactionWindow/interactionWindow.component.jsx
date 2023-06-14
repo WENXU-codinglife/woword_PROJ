@@ -1,10 +1,7 @@
 import { useContext } from 'react';
-
-import { UserContext } from '../../contexts/user/user.context';
 import { InteractionModeAndDataContext } from '../../contexts/interactionModeAndData/interactionModeAndData.context';
 import { INTERACTIONMODE } from '../../utils/titles/titles.utils';
 import { INTERACTOINWINDOWTABS } from '../../utils/titles/titles.utils';
-import { openaiReply } from '../../utils/api/openaiAPI.utils';
 import './interactionWindow.styles.scss';
 import InteractionDisplayBox from '../interactionDisplayBox/interactionDisplayBox.compomnent';
 const InteractionWindow = () => {

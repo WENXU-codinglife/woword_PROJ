@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { WordContext } from '../../contexts/word/word.context';
 import { InteractionModeAndDataContext } from '../../contexts/interactionModeAndData/interactionModeAndData.context';
 import { INTERACTIONMODE } from '../../utils/titles/titles.utils';
@@ -29,11 +29,11 @@ const WordButton = ( {word} ) => {
             <div className='word-button-text'>{text}</div>
             {currentMode === INTERACTIONMODE.CONVERSATIONMODE && searchedWordsPoolMatched?
                 <div className='word-button-state-icon'>
-                    <img className='thumbsup-icon' src={iconThumbsUp} />
+                    <img className='thumbsup-icon' src={iconThumbsUp} alt='' />
                 </div>
             : currentMode === INTERACTIONMODE.COMPOSERMODE && searchedWordsPoolSelected?
                 <div className='word-button-state-icon'>
-                    <img className='thumbsup-icon' src={iconCheckMark} />
+                    <img className='thumbsup-icon' src={iconCheckMark} alt='' />
                 </div>                
             :   null
             }  

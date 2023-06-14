@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
 export const WordContext = createContext({
     todaySearchedWords: [],
@@ -14,7 +14,6 @@ export const WordProvider = ({children}) => {
     const [todaySearchedWords, setTodaySearchedWords] = useState([]);
     const [searchedWord, setSearchedWord] = useState('');
     const [searchedWordDefinition, setSearchedWordDefinition] = useState([]);
-    const [conversationWords, setConversationWords] = useState(new Set());
 
     const addSearchedWord = (entry) => {
         if(entry === '' || todaySearchedWords.map(word => word.text).includes(entry))return;

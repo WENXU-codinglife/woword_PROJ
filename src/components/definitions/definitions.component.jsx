@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { WordContext } from "../../contexts/word/word.context";
 import DefinitionPart from "../definitionPart/definitionPart.component";
 import './definitions.styles.scss';

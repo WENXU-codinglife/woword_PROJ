@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/user/user.context';
-import ProfileIcon from '../../components/profileIcon/profileIcon.component';
-import { PROFILEIAMGESIZE } from '../../utils/titles/titles.utils';
-import { dictionaryAPIUrlGen } from '../../utils/api/dictionaryAPI.utils';
-import { wordResponseValidation } from '../../utils/dataManipulation/stringManipulation';
-import { db, findOrCreateGame, pushMyWordAndNextWord } from '../../utils/firebase/firebase.utils';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { doc } from 'firebase/firestore';
+import { findOrCreateGame } from '../../utils/firebase/firebase.utils';
 import './gameEntrance.styles.scss';
-import { async } from '@firebase/util';
 import Game from '../../components/game/game.component';
 
 const GameEntrance = () => {

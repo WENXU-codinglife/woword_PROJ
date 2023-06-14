@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { async, getDefaultAppConfig } from "@firebase/util";
+// import { async, getDefaultAppConfig } from "@firebase/util";
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,8 +26,6 @@ import {
     collection,
     query,
     where,
-    FieldValue,
-    orderBy,
     limit
 } from 'firebase/firestore';
 import { randomWordGen } from "../api/openaiAPI.utils";
@@ -43,7 +41,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -111,7 +110,7 @@ export const createOrUpdateWordDocument = async (word, userId) => {
             }) ;
         })
     }else if(querySnapshot.size === 0){
-        const wordDocRef = await addDoc(
+        await addDoc(
             wordsRef,
             {
                 text: word,

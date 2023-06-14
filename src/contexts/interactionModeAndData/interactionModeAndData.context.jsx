@@ -2,7 +2,6 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { INTERACTIONMODE, INTERACTIONSPEAKER } from '../../utils/titles/titles.utils';
 import { WordContext } from "../word/word.context";
 
-
 export const InteractionModeAndDataContext = createContext({
     currentMode: INTERACTIONMODE.DEFAULT,
     setCurrentMode: () => {},
@@ -25,13 +24,16 @@ export const InteractionModeAndDataContext = createContext({
     
     const value = { 
       currentMode, 
+      conversationMsgs,
       setCurrentMode, 
       resetConversationMsgs 
     };
     useEffect(() => {
-        resetTodaySearchedWords();
-        resetConversationMsgs();
+      resetTodaySearchedWords();
+      resetConversationMsgs();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentMode]);
+    
 
 
   

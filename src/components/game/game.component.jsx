@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useContext } from 'react';
-import { UserContext } from '../../contexts/user/user.context';
 import ProfileIcon from '../../components/profileIcon/profileIcon.component';
 import { GAMEPLAY, PROFILEIAMGESIZE } from '../../utils/titles/titles.utils';
 import { dictionaryAPIUrlGen } from '../../utils/api/dictionaryAPI.utils';
 import { oneLetterDiff, wordResponseValidation } from '../../utils/dataManipulation/stringManipulation';
-import { db, findOrCreateGame, pushMyWordAndNextWord } from '../../utils/firebase/firebase.utils';
+import { db, pushMyWordAndNextWord } from '../../utils/firebase/firebase.utils';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { doc } from 'firebase/firestore';
 import './game.styles.scss';
-import { async } from '@firebase/util';
-import { randomWordGen } from '../../utils/api/openaiAPI.utils';
 
 const Game = ({player, endGame, gameDocId}) => {
     const [nextWord, setNextWord] = useState('WAIT');
@@ -20,7 +16,7 @@ const Game = ({player, endGame, gameDocId}) => {
     const [comingWord, setComingWord] = useState('');
     const [myWordLocked, setMyWordLocked] = useState(false);
     const [nextWordLocked, setNextWordLocked] = useState(false);
-    const [values, loading, error] = useDocumentData(doc(db, 'games', gameDocId));
+    const [values] = useDocumentData(doc(db, 'games', gameDocId));
     const [opponent, setOpponent] = useState('/');
     const [wordHistory, setWordHistory] = useState([]);
 
@@ -225,7 +221,7 @@ const Game = ({player, endGame, gameDocId}) => {
             }
             
         }
-    },[values])
+    },[values, nextWord, opponent, player, wordHistory])
     return (
         opponent === '/'?
         <span>Waiting For Your Opponent</span>
@@ -241,7 +237,9 @@ const Game = ({player, endGame, gameDocId}) => {
                     <div className='host-word-history'>
                         {
                             wordHistory.map((word) => {
-                                if(word.player === GAMEPLAY.HOST)return <div>{word.word}</div>;
+                                if(word.player === GAMEPLAY.HOST)
+                                    return <div>{word.word}</div>;
+                                return null;
                             })
                         }
                     </div>
@@ -249,7 +247,9 @@ const Game = ({player, endGame, gameDocId}) => {
                     <div className='guest-word-history'>
                     {
                             wordHistory.map((word) => {
-                                if(word.player === GAMEPLAY.GUEST)return <div>{word.word}</div>;
+                                if(word.player === GAMEPLAY.GUEST)
+                                    return <div>{word.word}</div>;
+                                return null;
                             })
                         }
                     </div>

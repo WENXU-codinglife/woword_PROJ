@@ -1,7 +1,4 @@
-import { async } from "@firebase/util";
 const { Configuration, OpenAIApi } = require("openai");
-
-
 
 var CryptoJS = require("crypto-js");
 var ciphertext = 'U2FsdGVkX19JgF0iF6xKQcPTVN5eHlsbZx3nzSY+cTQiVMRZp/fKfh3aDBFIggDKqH3U/raybtwm4TOri77r4MdeR9ialgCslLiS0TFFjko=';

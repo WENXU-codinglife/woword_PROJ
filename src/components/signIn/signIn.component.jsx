@@ -4,7 +4,6 @@ import FormInput from "../form-input/form-input.component";
 
 
 import { signInAuthUserWithEmailAndPassword, signInWithGoogleRedirect } from "../../utils/firebase/firebase.utils";
-import { async } from "@firebase/util";
 
 import './signIn.styles.scss';
 

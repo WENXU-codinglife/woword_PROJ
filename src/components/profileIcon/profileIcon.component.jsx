@@ -12,7 +12,7 @@ const ProfileIcon = ({ user = null, isClickable = false, size = PROFILEIAMGESIZE
     const icon  = !user? profileRobot : profileDemo;
     return (
         <div className='profile-image-container'>
-            <img className ={`image ${size}`} src = {icon}/>
+            <img className ={`image ${size}`} src = {icon} alt='' />
         </div>
     )
 } 
