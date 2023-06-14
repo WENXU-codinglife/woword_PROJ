@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { WordContext } from "../../contexts/word/word.context";
 import { UserContext } from "../../contexts/user/user.context";
 import { dictionaryAPIUrlGen } from '../../utils/api/dictionaryAPI.utils'
