@@ -20,7 +20,7 @@ jobs:
         run: yarn test
       
       - name: Build file
-      - run: yarn build
+        run: yarn build
       
       - name: Deploy production to Netlify
         uses: South-Paw/action-netlify-deploy@v1.2.0
